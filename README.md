@@ -30,6 +30,8 @@ export JWT_SECRET_KEY="cambia-esta-clave"
 poetry run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
+> `JWT_SECRET_KEY` es obligatoria para iniciar la API.
+
 ## Uso de la API
 
 ### 1) Obtener token
@@ -74,6 +76,7 @@ Respuesta esperada (ejemplo):
 
 ```bash
 cd backend
+echo "JWT_SECRET_KEY=cambia-esta-clave" > .env
 docker compose up --build
 ```
 

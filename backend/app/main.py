@@ -7,7 +7,9 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
 
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "change-this-secret-in-production")
+SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("JWT_SECRET_KEY environment variable is required")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_SECONDS = 300
 REFRESH_TOKEN_EXPIRE_SECONDS = 1800
@@ -51,7 +53,7 @@ def create_token(username: str, token_type: str, expires_seconds: int) -> str:
         "sub": username,
         "type": token_type,
         "iat": int(now.timestamp()),
-        "exp": now + timedelta(seconds=expires_seconds),
+        "exp": int((now + timedelta(seconds=expires_seconds)).timestamp()),
     }
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
