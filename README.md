@@ -10,9 +10,9 @@ Este repositorio contiene:
 
 ## Estructura
 
-- `/tmp/workspace/spereyrabf/copilot-session-1/backend/app/main.py`
-- `/tmp/workspace/spereyrabf/copilot-session-1/frontend/src/App.jsx`
-- `/tmp/workspace/spereyrabf/copilot-session-1/DESIGN.md`
+- `backend/app/main.py`
+- `frontend/src/App.jsx`
+- `DESIGN.md`
 
 ## Requisitos
 
@@ -23,7 +23,7 @@ Este repositorio contiene:
 ## 1) Levantar backend
 
 ```bash
-cd /tmp/workspace/spereyrabf/copilot-session-1/backend
+cd backend
 poetry install
 export JWT_SECRET_KEY="cambia-esta-clave"
 poetry run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
@@ -39,7 +39,7 @@ Credenciales de prueba del backend:
 En otra terminal:
 
 ```bash
-cd /tmp/workspace/spereyrabf/copilot-session-1/frontend
+cd frontend
 npm install
 npm run dev
 ```
@@ -63,6 +63,6 @@ VITE_API_BASE_URL=http://localhost:8000
 
 El frontend aplica el estándar visual definido en:
 
-- `/tmp/workspace/spereyrabf/copilot-session-1/DESIGN.md`
+- `DESIGN.md`
 
 Se usan colores, tipografía y componentes base (tarjeta/superficie y botón primario) alineados con ese documento.
