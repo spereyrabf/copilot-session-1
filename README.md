@@ -1,83 +1,68 @@
-# Backend FastAPI con JWT
+# Backend + Frontend (React) con autenticación JWT
 
-Este repositorio incluye una aplicación Web API en Python/FastAPI dentro de la carpeta `backend`.
+Este repositorio contiene:
 
-## Características
-
-- Endpoint `POST /token` para autenticación con:
-  - `username`: `admin`
-  - `password`: `admin123`
-- Retorna `access_token` con expiración de **300 segundos**.
-- Retorna también `refresh_token` para solicitar nuevos access tokens.
-- Endpoint `POST /refresh` para refrescar el token de acceso.
-- Hashing de contraseña con `passlib[bcrypt]`.
-- Dependencia `bcrypt` fijada a `>=3.2,<4.0`.
-- Gestión de dependencias con **Poetry** y `package-mode = false`.
+- `backend/`: API en FastAPI con login JWT.
+- `frontend/`: aplicación React con:
+  - pantalla de login conectada al backend (`POST /token`)
+  - pantalla de bienvenida protegida
+  - almacenamiento del token en sesión (`sessionStorage`)
 
 ## Estructura
 
-- `backend/app/main.py`: aplicación FastAPI.
-- `backend/pyproject.toml`: configuración de Poetry y dependencias.
-- `backend/Dockerfile`: imagen de la aplicación.
-- `backend/docker-compose.yml`: despliegue con Docker Compose.
+- `/tmp/workspace/spereyrabf/copilot-session-1/backend/app/main.py`
+- `/tmp/workspace/spereyrabf/copilot-session-1/frontend/src/App.jsx`
+- `/tmp/workspace/spereyrabf/copilot-session-1/DESIGN.md`
 
-## Ejecución local
+## Requisitos
+
+- Python 3.11+
+- Poetry
+- Node.js 18+ y npm
+
+## 1) Levantar backend
 
 ```bash
-cd backend
+cd /tmp/workspace/spereyrabf/copilot-session-1/backend
 poetry install
 export JWT_SECRET_KEY="cambia-esta-clave"
 poetry run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-> `JWT_SECRET_KEY` es obligatoria para iniciar la API.
+Credenciales de prueba del backend:
 
-## Uso de la API
+- usuario: `admin`
+- contraseña: `admin123`
 
-### 1) Obtener token
+## 2) Levantar frontend
 
-```bash
-curl -X POST http://localhost:8000/token \
-  -H "Content-Type: application/json" \
-  -d '{"username":"admin","password":"admin123"}'
-```
-
-Respuesta esperada (ejemplo):
-
-```json
-{
-  "access_token": "<jwt>",
-  "refresh_token": "<jwt>",
-  "token_type": "bearer",
-  "expires_in": 300
-}
-```
-
-### 2) Refrescar access token
+En otra terminal:
 
 ```bash
-curl -X POST http://localhost:8000/refresh \
-  -H "Content-Type: application/json" \
-  -d '{"refresh_token":"<jwt_refresh>"}'
+cd /tmp/workspace/spereyrabf/copilot-session-1/frontend
+npm install
+npm run dev
 ```
 
-Respuesta esperada (ejemplo):
-
-```json
-{
-  "access_token": "<jwt>",
-  "refresh_token": null,
-  "token_type": "bearer",
-  "expires_in": 300
-}
-```
-
-## Ejecución con Docker
+El frontend usa por defecto `http://localhost:8000` como API.
+Si necesitas otro endpoint, define:
 
 ```bash
-cd backend
-echo "JWT_SECRET_KEY=cambia-esta-clave" > .env
-docker compose up --build
+VITE_API_BASE_URL=http://localhost:8000
 ```
 
-API disponible en: `http://localhost:8000`
+## Flujo de uso
+
+1. Abrir la app frontend (por defecto en `http://localhost:5173`).
+2. Iniciar sesión con las credenciales del backend.
+3. Al autenticarse, se guarda `access_token` en `sessionStorage`.
+4. La ruta de bienvenida (`/welcome`) sólo es accesible con sesión activa.
+5. Al cerrar sesión, se elimina el token y se regresa a `/login`.
+
+## Diseño
+
+El frontend aplica el estándar visual definido en:
+
+- `/tmp/workspace/spereyrabf/copilot-session-1/DESIGN.md`
+
+Se usan colores, tipografía y componentes base (tarjeta/superficie y botón primario) alineados con ese documento.
