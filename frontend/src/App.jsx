@@ -81,6 +81,89 @@ function LoginPage({ onLogin, isAuthenticated }) {
   )
 }
 
+const MS_CERTIFICATIONS = [
+  {
+    code: 'AI-901',
+    name: 'Microsoft Azure AI Fundamentals',
+    level: 'Fundamentals',
+    description:
+      'Nueva certificación 2026 que valida conocimientos conceptuales de soluciones de IA en Azure y habilidades prácticas con Microsoft Foundry.',
+    url: 'https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/',
+    badge: '🤖',
+    isNew: true,
+  },
+  {
+    code: 'SC-500',
+    name: 'Cloud and AI Security Engineer Associate',
+    level: 'Associate',
+    description:
+      'Nueva certificación 2026 que reemplaza a AZ-500. Valida la capacidad de diseñar e implementar entornos seguros en la nube con protección de modelos de IA.',
+    url: 'https://learn.microsoft.com/en-us/credentials/certifications/exams/sc-500',
+    badge: '🔐',
+    isNew: true,
+  },
+  {
+    code: 'AZ-104',
+    name: 'Microsoft Azure Administrator',
+    level: 'Associate',
+    description:
+      'Certifica habilidades para implementar, administrar y monitorear la infraestructura de Azure, incluyendo identidad, gobernanza, almacenamiento y redes.',
+    url: 'https://learn.microsoft.com/en-us/credentials/certifications/azure-administrator/',
+    badge: '⚙️',
+    isNew: false,
+  },
+  {
+    code: 'DP-600',
+    name: 'Microsoft Fabric Analytics Engineer Associate',
+    level: 'Associate',
+    description:
+      'Valida competencias en el diseño e implementación de soluciones de análisis de datos empresariales con Microsoft Fabric.',
+    url: 'https://learn.microsoft.com/en-us/credentials/certifications/fabric-analytics-engineer-associate/',
+    badge: '📊',
+    isNew: false,
+  },
+  {
+    code: 'PL-900',
+    name: 'Microsoft Power Platform Fundamentals',
+    level: 'Fundamentals',
+    description:
+      'Demuestra comprensión de las capacidades clave de Power Platform, incluyendo Power BI, Power Apps, Power Automate y Power Virtual Agents.',
+    url: 'https://learn.microsoft.com/en-us/credentials/certifications/power-platform-fundamentals/',
+    badge: '⚡',
+    isNew: false,
+  },
+  {
+    code: 'MS-900',
+    name: 'Microsoft 365 Fundamentals',
+    level: 'Fundamentals',
+    description:
+      'Certifica conocimientos sobre los servicios de productividad y colaboración en la nube de Microsoft 365, incluyendo Teams y Copilot.',
+    url: 'https://learn.microsoft.com/en-us/credentials/certifications/microsoft-365-fundamentals/',
+    badge: '💼',
+    isNew: false,
+  },
+]
+
+function CertificationCard({ cert }) {
+  return (
+    <a
+      href={cert.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="cert-card"
+    >
+      <div className="cert-card-header">
+        <span className="cert-badge">{cert.badge}</span>
+        {cert.isNew ? <span className="cert-new-tag">Nuevo 2026</span> : null}
+      </div>
+      <span className="cert-code">{cert.code}</span>
+      <h3 className="cert-name">{cert.name}</h3>
+      <span className="cert-level">{cert.level}</span>
+      <p className="cert-description">{cert.description}</p>
+    </a>
+  )
+}
+
 function WelcomePage({ onLogout }) {
   const navigate = useNavigate()
 
@@ -90,13 +173,25 @@ function WelcomePage({ onLogout }) {
   }
 
   return (
-    <main className="page">
-      <section className="card">
+    <main className="page welcome-page">
+      <section className="card welcome-card">
         <h1>Bienvenido</h1>
         <p className="subtitle">Tu sesión está activa.</p>
         <button type="button" onClick={handleLogout}>
           Cerrar sesión
         </button>
+      </section>
+
+      <section className="certs-section">
+        <h2 className="certs-title">Certificaciones Microsoft 2026</h2>
+        <p className="certs-subtitle">
+          Últimas certificaciones destacadas de Microsoft para potenciar tu carrera.
+        </p>
+        <div className="certs-grid">
+          {MS_CERTIFICATIONS.map((cert) => (
+            <CertificationCard key={cert.code} cert={cert} />
+          ))}
+        </div>
       </section>
     </main>
   )
